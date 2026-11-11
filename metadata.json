@@ -1,0 +1,6 @@
+{
+  "name": "Dergag Community Unity & Charity Association",
+  "description": "Enterprise-grade web platform for Dergag Community Unity & Charity Association featuring membership management, charity campaigns, community development projects, multilingual support (Amharic & English), and comprehensive administration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

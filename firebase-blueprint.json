@@ -1,0 +1,211 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user account with role-based access control.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "format": "email", "maxLength": 255 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["super_admin", "admin", "content_manager", "membership_manager", "project_manager", "member"] },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "displayName", "role"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Approved registered community member.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "memberId": { "type": "string", "maxLength": 32 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "gender": { "type": "string", "enum": ["male", "female", "other", "prefer_not_to_say"] },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "cityRegion": { "type": "string", "maxLength": 100 },
+        "currentLocation": { "type": "string", "maxLength": 150 },
+        "dergagRelationship": { "type": "string", "maxLength": 200 },
+        "profession": { "type": "string", "maxLength": 100 },
+        "interestAreas": { "type": "string", "maxLength": 300 },
+        "volunteerSkills": { "type": "string", "maxLength": 300 },
+        "status": { "type": "string", "enum": ["approved", "suspended"] },
+        "joinedDate": { "type": "string" }
+      },
+      "required": ["memberId", "fullName", "phone", "status"]
+    },
+    "MembershipApplication": {
+      "title": "MembershipApplication",
+      "description": "Public membership application waiting for administrative review.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "gender": { "type": "string", "enum": ["male", "female", "other", "prefer_not_to_say"] },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "cityRegion": { "type": "string", "maxLength": 100 },
+        "currentLocation": { "type": "string", "maxLength": 150 },
+        "dergagRelationship": { "type": "string", "maxLength": 200 },
+        "profession": { "type": "string", "maxLength": 100 },
+        "interestAreas": { "type": "string", "maxLength": 300 },
+        "volunteerSkills": { "type": "string", "maxLength": 300 },
+        "shortMessage": { "type": "string", "maxLength": 1000 },
+        "privacyConsent": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "submittedAt": { "type": "string" },
+        "reviewedBy": { "type": "string", "maxLength": 100 },
+        "reviewedAt": { "type": "string" }
+      },
+      "required": ["fullName", "phone", "cityRegion", "privacyConsent", "status"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Community development, charity, or educational project.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "titleAm": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "descriptionAm": { "type": "string", "maxLength": 4000 },
+        "category": { "type": "string", "enum": ["education", "healthcare", "social_support", "youth_development", "community_development", "environmental_protection", "spiritual_cultural"] },
+        "location": { "type": "string", "maxLength": 150 },
+        "coverImage": { "type": "string", "maxLength": 1000 },
+        "startDate": { "type": "string" },
+        "expectedCompletionDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["planned", "ongoing", "completed"] },
+        "budget": { "type": "string", "maxLength": 50 },
+        "fundingProgress": { "type": "string", "maxLength": 10 },
+        "impactReport": { "type": "string", "maxLength": 3000 },
+        "isFeatured": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "description", "category", "location", "status"]
+    },
+    "CharityCampaign": {
+      "title": "CharityCampaign",
+      "description": "Verified charity fundraising campaign for individuals or community causes.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "titleAm": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "targetBeneficiary": { "type": "string", "maxLength": 200 },
+        "goalAmount": { "type": "string", "maxLength": 50 },
+        "verifiedProgress": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["active", "funded", "paused"] },
+        "bankAccount": { "type": "string", "maxLength": 150 },
+        "contactPerson": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["title", "description", "targetBeneficiary", "status"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Official organization news or public notice.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 250 },
+        "titleAm": { "type": "string", "maxLength": 250 },
+        "content": { "type": "string", "maxLength": 5000 },
+        "contentAm": { "type": "string", "maxLength": 5000 },
+        "category": { "type": "string", "enum": ["general", "charity", "event", "meeting", "official"] },
+        "publishedDate": { "type": "string" },
+        "author": { "type": "string", "maxLength": 100 },
+        "isPinned": { "type": "boolean" },
+        "coverImage": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["title", "content", "category", "publishedDate"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Upcoming or past community gathering, meeting, or volunteer event.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "titleAm": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "eventDate": { "type": "string" },
+        "location": { "type": "string", "maxLength": 150 },
+        "organizer": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["upcoming", "ongoing", "completed", "cancelled"] },
+        "attendeeCount": { "type": "string", "maxLength": 10 }
+      },
+      "required": ["title", "eventDate", "location", "status"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "Inquiry sent via public contact form.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "senderEmail": { "type": "string", "format": "email", "maxLength": 150 },
+        "senderPhone": { "type": "string", "maxLength": 30 },
+        "subject": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "sentAt": { "type": "string" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["senderName", "senderPhone", "message", "sentAt"]
+    },
+    "OrganizationSettings": {
+      "title": "OrganizationSettings",
+      "description": "System-wide editable organizational details.",
+      "type": "object",
+      "properties": {
+        "orgName": { "type": "string", "maxLength": 150 },
+        "orgNameAm": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 200 },
+        "telegramLink": { "type": "string", "maxLength": 255 },
+        "bankAccounts": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["orgName", "phone", "email"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles and RBAC role assignments"
+    },
+    "/members/{memberId}": {
+      "schema": { "$ref": "#/entities/Member" },
+      "description": "Approved organization members list with personal contacts protected"
+    },
+    "/membershipApplications/{appId}": {
+      "schema": { "$ref": "#/entities/MembershipApplication" },
+      "description": "Public applications pending approval by authorized staff"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "Community development, charity, and social projects"
+    },
+    "/charityCampaigns/{campaignId}": {
+      "schema": { "$ref": "#/entities/CharityCampaign" },
+      "description": "Verified charity campaigns and funding records"
+    },
+    "/announcements/{announcementId}": {
+      "schema": { "$ref": "#/entities/Announcement" },
+      "description": "Official public notices and community announcements"
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "#/entities/Event" },
+      "description": "Community gatherings and programs"
+    },
+    "/contactMessages/{messageId}": {
+      "schema": { "$ref": "#/entities/ContactMessage" },
+      "description": "Incoming inquiries from the public contact form"
+    },
+    "/organizationSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/OrganizationSettings" },
+      "description": "Admin configurable organizational information"
+    }
+  }
+}

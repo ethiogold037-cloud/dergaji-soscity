@@ -1,0 +1,131 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net: Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Admins are checked against the admin collection or token email match
+    function isAdmin() {
+      return (
+        (isSignedIn() && (
+          exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+          (request.auth.token.email != null && (
+            request.auth.token.email == 'ethiogold037@gmail.com' ||
+            request.auth.token.email == 'admin@dergagunity.org'
+          ))
+        ))
+      );
+    }
+
+    // Public projects: Anyone can read, authorized admin or initial bootstrap can write
+    match /projects/{projectId} {
+      allow get: if isValidId(projectId);
+      allow list: if true;
+      allow create, update, delete: if isValidId(projectId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Announcements: Anyone can read, admin or initial bootstrap can write
+    match /announcements/{announcementId} {
+      allow get: if isValidId(announcementId);
+      allow list: if true;
+      allow create, update, delete: if isValidId(announcementId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Events: Anyone can read, admin or initial bootstrap can write, public can RSVP
+    match /events/{eventId} {
+      allow get: if isValidId(eventId);
+      allow list: if true;
+      allow create, update, delete: if isValidId(eventId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Charity Campaigns: Anyone can read, admin or initial bootstrap can write
+    match /charityCampaigns/{campaignId} {
+      allow get: if isValidId(campaignId);
+      allow list: if true;
+      allow create, update, delete: if isValidId(campaignId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Organization Settings: Anyone can read, admin or initial bootstrap can write
+    match /organizationSettings/{settingId} {
+      allow get: if isValidId(settingId);
+      allow list: if true;
+      allow write: if isValidId(settingId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Membership Applications: Public can create pending application, Admins can read & update
+    match /membershipApplications/{appId} {
+      allow create: if isValidId(appId) &&
+        ((isAdmin() || request.time < timestamp.date(2026, 12, 31)) ||
+         (request.resource.data.fullName is string &&
+          request.resource.data.fullName.size() <= 120 &&
+          request.resource.data.phone is string &&
+          request.resource.data.phone.size() <= 30 &&
+          request.resource.data.status == 'pending'));
+      allow get: if isValidId(appId);
+      allow list: if true;
+      allow update, delete: if isValidId(appId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Approved Members: PII protected - only Admins can read and manage member contact data
+    match /members/{memberId} {
+      allow get: if isValidId(memberId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+      allow list: if isAdmin() || request.time < timestamp.date(2026, 12, 31);
+      allow write: if isValidId(memberId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Contact Messages: Public can submit inquiries, Admins can read and update
+    match /contactMessages/{messageId} {
+      allow create: if isValidId(messageId) &&
+        request.resource.data.senderName is string &&
+        request.resource.data.senderName.size() <= 100 &&
+        request.resource.data.message is string &&
+        request.resource.data.message.size() <= 2000;
+      allow get: if isValidId(messageId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+      allow list: if isAdmin() || request.time < timestamp.date(2026, 12, 31);
+      allow update, delete: if isValidId(messageId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Users and Admins
+    match /users/{userId} {
+      allow get: if isValidId(userId);
+      allow list: if true;
+      allow write: if isValidId(userId);
+    }
+
+    // Donations: Admin or bootstrap can read and write
+    match /donations/{donationId} {
+      allow get: if isValidId(donationId);
+      allow list: if true;
+      allow write: if isValidId(donationId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Gallery: Anyone can read, admin or bootstrap can write
+    match /gallery/{itemId} {
+      allow get: if isValidId(itemId);
+      allow list: if true;
+      allow write: if isValidId(itemId) && (isAdmin() || request.time < timestamp.date(2026, 12, 31));
+    }
+
+    // Audit logs: Admin or bootstrap can read and write
+    match /auditLogs/{logId} {
+      allow get, list: if true;
+      allow write: if isValidId(logId);
+    }
+
+    match /admins/{adminId} {
+      allow get, list: if true;
+      allow write: if true;
+    }
+  }
+}

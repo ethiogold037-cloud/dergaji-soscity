@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Brand Primary Colors */
+    --color-royal-blue: #2563EB;
+    --color-deep-navy: #14213D;
+    --color-emerald-green: #059669;
+    --color-luxury-gold: #E5A000;
+
+    /* Secondary Accent Colors */
+    --color-purple: #7C3AED;
+    --color-teal: #0891B2;
+    --color-coral: #F97360;
+    --color-orange: #F59E0B;
+    --color-rose: #E11D48;
+
+    /* Backgrounds */
+    --color-warm-white: #FFFDF8;
+    --color-soft-blue: #EFF6FF;
+    --color-soft-green: #ECFDF5;
+    --color-soft-purple: #F5F3FF;
+    --color-soft-gold: #FFFBEB;
+
+    /* Typography: Times New Roman primary with Ethiopic Serif fallbacks */
+    --font-times: "Times New Roman", Times, "Noto Serif Ethiopic", "Noto Sans Ethiopic", serif;
+  }
+
+  html {
+    font-family: "Times New Roman", Times, "Noto Serif Ethiopic", "Noto Sans Ethiopic", serif;
+    scroll-behavior: smooth;
+    color: #14213D;
+    background-color: #FFFDF8;
+  }
+
+  body {
+    font-family: "Times New Roman", Times, "Noto Serif Ethiopic", "Noto Sans Ethiopic", serif;
+    color: #14213D;
+    background-color: #FFFDF8;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  p, span, a, button, input, select, textarea, label, table, th, td {
+    font-family: "Times New Roman", Times, "Noto Serif Ethiopic", "Noto Sans Ethiopic", serif;
+  }
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #FFFDF8;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9D2C5;
+  border-radius: 9999px;
+  border: 2px solid #FFFDF8;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B8AF9F;
+}
+
+/* Amharic and Serif Typography helpers */
+.font-times {
+  font-family: "Times New Roman", Times, "Noto Serif Ethiopic", "Noto Sans Ethiopic", serif !important;
+}
+
+.font-ethiopic {
+  font-family: "Noto Serif Ethiopic", "Times New Roman", Times, "Noto Sans Ethiopic", serif;
+}
+
+/* Luxury card glows and borders */
+.luxury-gold-border {
+  border-image: linear-gradient(to right, #E5A000, #F59E0B, #E5A000) 1;
+}
+
+.card-luxury {
+  background: #FFFFFF;
+  border: 1px solid rgba(229, 160, 0, 0.2);
+  box-shadow: 0 4px 20px -2px rgba(20, 33, 61, 0.05), 0 2px 6px -1px rgba(229, 160, 0, 0.08);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-luxury:hover {
+  transform: translateY(-3px);
+  border-color: rgba(229, 160, 0, 0.45);
+  box-shadow: 0 12px 30px -4px rgba(20, 33, 61, 0.1), 0 4px 12px -2px rgba(229, 160, 0, 0.16);
+}
+
+.gradient-royal {
+  background: linear-gradient(135deg, #14213D 0%, #2563EB 100%);
+}
+
+.gradient-emerald {
+  background: linear-gradient(135deg, #059669 0%, #0891B2 100%);
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, #E5A000 0%, #D97706 100%);
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+}
+
+.gradient-sunset {
+  background: linear-gradient(135deg, #E11D48 0%, #F59E0B 100%);
+}
